@@ -1,51 +1,168 @@
 {
+  "schemaVersion": "1.0",
   "project": {
+    "id": "system-design-template",
     "name": "System Design Template",
     "repository": "https://github.com/kevinlinstrum001/system_design_template",
     "site": null
   },
   "resources": [
     {
-      "id": "system-events-sheet",
-      "name": "System Events Sheet",
-      "type": "google-sheet",
-      "url": "https://docs.google.com/spreadsheets/d/EXAMPLE",
-      "purpose": "Stores workflow events and completion records",
+      "id": "repository-readme",
+      "name": "Repository README",
+      "type": "repository-document",
+      "location": {
+        "kind": "repository-path",
+        "path": "README.md"
+      },
+      "purpose": "Defines the project purpose, conceptual model, repository structure, guiding principles, development method, and current status",
       "status": "active",
-      "access": "private",
-      "tags": ["events", "records"],
-      "notes": ""
-    },
-    {
-      "id": "start-test-form",
-      "name": "Start Test Form",
-      "type": "google-form",
-      "url": "https://docs.google.com/forms/d/EXAMPLE",
-      "purpose": "Starts a sandbox workflow test",
-      "status": "active",
-      "access": "restricted",
-      "tags": ["trigger", "sandbox"],
+      "access": "public",
+      "scope": "repository",
+      "tags": [
+        "documentation",
+        "project-charter",
+        "repository-guide"
+      ],
+      "replacedBy": null,
       "notes": ""
     },
     {
       "id": "system-design-overview",
       "name": "System Design Overview",
       "type": "repository-document",
-      "path": "overview.md",
-      "purpose": "Initial vocabulary, goals, and guiding principles",
+      "location": {
+        "kind": "repository-path",
+        "path": "overview.md"
+      },
+      "purpose": "Provides the initial long-form vocabulary, principles, distinctions, priorities, and lesson structure for practical system design",
       "status": "active",
       "access": "public",
-      "tags": ["documentation"]
+      "scope": "repository",
+      "tags": [
+        "documentation",
+        "system-design",
+        "foundation"
+      ],
+      "replacedBy": null,
+      "notes": "This is the active foundation draft. Material may later be reorganized into formal lessons under docs/."
     },
     {
-      "id": "manufacturer-sds-example",
-      "name": "Manufacturer SDS",
-      "type": "external-pdf",
-      "url": "https://example.com/document.pdf",
-      "purpose": "Safety reference",
+      "id": "project-entry-page",
+      "name": "Project Entry Page",
+      "type": "repository-page",
+      "location": {
+        "kind": "repository-path",
+        "path": "index.html"
+      },
+      "purpose": "Serves as the planned static entrance to project documentation, lessons, examples, and experiments",
+      "status": "planned",
+      "access": "public",
+      "scope": "repository",
+      "tags": [
+        "website",
+        "navigation",
+        "github-pages"
+      ],
+      "replacedBy": null,
+      "notes": "The file exists as a placeholder, but the public entry page has not yet been built or published."
+    },
+    {
+      "id": "config-readme",
+      "name": "Configuration Guide",
+      "type": "repository-document",
+      "location": {
+        "kind": "repository-path",
+        "path": "config/README.md"
+      },
+      "purpose": "Defines the scope, security rules, formatting standards, lifecycle values, and maintenance policy for repository configuration",
       "status": "active",
       "access": "public",
-      "tags": ["sds", "manufacturer"]
+      "scope": "repository",
+      "tags": [
+        "configuration",
+        "policy",
+        "repository-guide"
+      ],
+      "replacedBy": null,
+      "notes": ""
+    },
+    {
+      "id": "resource-registry",
+      "name": "Resource Registry",
+      "type": "dataset",
+      "location": {
+        "kind": "repository-path",
+        "path": "config/resources.json"
+      },
+      "purpose": "Identifies important repository and external resources, their locations, purposes, access levels, scopes, and lifecycle status",
+      "status": "active",
+      "access": "public",
+      "scope": "repository",
+      "tags": [
+        "configuration",
+        "resources",
+        "registry"
+      ],
+      "replacedBy": null,
+      "notes": "This record describes the registry itself."
+    },
+    {
+      "id": "task-app-example",
+      "name": "Task App Example",
+      "type": "repository-page",
+      "location": {
+        "kind": "repository-path",
+        "path": "examples/01-task-app/index.html"
+      },
+      "purpose": "Provides the first sandbox for testing a small human-centered task workflow",
+      "status": "planned",
+      "access": "public",
+      "scope": "example",
+      "exampleId": "01-task-app",
+      "tags": [
+        "example",
+        "task-workflow",
+        "sandbox"
+      ],
+      "replacedBy": null,
+      "notes": "The example structure exists, but its interface and design documentation are not yet complete."
+    },
+    {
+      "id": "system-events-sheet",
+      "name": "System Events Sheet",
+      "type": "google-sheet",
+      "location": null,
+      "purpose": "Will store workflow events, current state, and completion records for a sandbox experiment",
+      "status": "planned",
+      "access": "private",
+      "scope": "example",
+      "exampleId": "01-task-app",
+      "tags": [
+        "events",
+        "records",
+        "sandbox"
+      ],
+      "replacedBy": null,
+      "notes": "No verified public-safe location is currently recorded."
+    },
+    {
+      "id": "start-test-form",
+      "name": "Start Test Form",
+      "type": "google-form",
+      "location": null,
+      "purpose": "Will provide a deliberate trigger for starting a sandbox workflow test",
+      "status": "planned",
+      "access": "restricted",
+      "scope": "example",
+      "exampleId": "01-task-app",
+      "tags": [
+        "trigger",
+        "form",
+        "sandbox"
+      ],
+      "replacedBy": null,
+      "notes": "No verified public-safe location is currently recorded."
     }
   ]
 }
