@@ -1,5 +1,3 @@
-This replacement executes Step 4 and upgrades `examples/README.md` into the operating standard for experiments. It preserves the original principle that each example must keep both the working system and the reasoning that produced it, while adding naming, status, lifecycle, documentation, promotion, completion, and archive rules.  
-
 # Examples
 
 This folder contains the applications, prototypes, experiments, and case studies created while developing the **System Design Template** project.
@@ -1070,5 +1068,3 @@ A strong example:
 The goal is not to produce the largest or most polished application.
 
 The goal is to learn something reliable about how a human-centered system should work.
-
-This version can replace `examples/README.md` directly.

@@ -1209,7 +1209,8 @@ Completed:
 * Step 2 — repaired and formalized `config/resources.json`;
 * Step 3 review — identified changes required by Steps 1 and 2;
 * development-plan revision — incorporated the Step 3 change record and revised implementation requirements.
+* Step 4 - upgraded examples/README.md
 
 Next:
 
-* Step 3 — create the upgraded `shared/README.md`.
+* Step 5 - Build Examples/01-task-app/README.md
