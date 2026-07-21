@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical lesson on Git operations: status, staging, committing, pushing, pulling, configuration, branches, and recovery.">
+  <title>Git Operations | Klin's Learning Library</title>
+  <style>
+    :root {
+      --navy:#142238; --navy2:#213b5b; --blue:#4d78a8; --paper:#f4f0e7;
+      --white:#fff; --ink:#202a35; --muted:#66717c; --border:#d6dde4;
+      --green:#356a54; --gold:#c68a31; --red:#8d443d; --purple:#73538f;
+      --shadow:0 12px 32px rgba(20,34,56,.12); --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:145px}
+    body{margin:0;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);
+      background:radial-gradient(circle at top right,rgba(77,120,168,.14),transparent 34rem),
+      linear-gradient(180deg,#fbfcfd 0%,var(--paper) 100%);line-height:1.65}
+    a{color:inherit}
+    .site-header{position:sticky;top:0;z-index:1000;color:var(--white);
+      background:rgba(20,34,56,.97);box-shadow:0 4px 18px rgba(7,14,25,.22)}
+    .header-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;
+      padding:.85rem clamp(1rem,4vw,3rem)}
+    .brand{display:flex;align-items:center;gap:.75rem;font-weight:800}
+    .brand-mark{display:grid;place-items:center;width:2.35rem;height:2.35rem;border-radius:10px;
+      background:linear-gradient(145deg,var(--gold),var(--navy2));border:1px solid rgba(255,255,255,.25)}
+    .index-link{display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;border-radius:999px;
+      border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-weight:750}
+    .page-nav{display:flex;gap:.35rem;overflow-x:auto;padding:.55rem clamp(1rem,4vw,3rem) .7rem;
+      border-top:1px solid rgba(255,255,255,.08)}
+    .page-nav a{flex:0 0 auto;padding:.4rem .68rem;border-radius:999px;color:rgba(255,255,255,.82);
+      text-decoration:none;font-size:.82rem;font-weight:650}
+    main{width:min(1140px,calc(100% - 2rem));margin:0 auto;padding:clamp(2.5rem,7vw,5.5rem) 0 4rem}
+    .hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,.8fr);gap:clamp(2rem,6vw,4.5rem);
+      align-items:center;margin-bottom:3rem}
+    .eyebrow{margin:0 0 .75rem;color:var(--blue);text-transform:uppercase;letter-spacing:.16em;
+      font-size:.82rem;font-weight:850}
+    h1{margin:0;color:var(--navy);font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(2.8rem,7vw,5.8rem);line-height:.98;letter-spacing:-.045em}
+    .hero-copy{max-width:760px;margin:1.35rem 0 0;color:var(--muted);font-size:clamp(1.05rem,2vw,1.24rem)}
+    .hero-card,.card{padding:1.35rem;border:1px solid var(--border);border-radius:var(--radius);
+      background:rgba(255,255,255,.9);box-shadow:0 5px 18px rgba(20,34,56,.06)}
+    .hero-card{padding:1.5rem;background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(231,239,248,.75));
+      box-shadow:var(--shadow)}
+    section{margin:3.2rem 0}
+    .section-heading{margin-bottom:1.2rem}
+    .section-heading h2{margin:0 0 .35rem;color:var(--navy);font-size:clamp(1.65rem,3vw,2.35rem)}
+    .section-heading p,.card p{margin:0;color:var(--muted)}
+    .grid-2,.grid-3,.grid-4{display:grid;gap:1.2rem}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card h3{margin:0 0 .55rem;color:var(--navy)}
+    .card ul{margin:.75rem 0 0;padding-left:1.2rem}
+    .status-card{border-top:4px solid var(--blue)} .stage-card{border-top:4px solid var(--green)}
+    .commit-card{border-top:4px solid var(--gold)} .remote-card{border-top:4px solid var(--purple)}
+    .safety-card{border-top:4px solid var(--red)}
+    .callout{padding:1.45rem 1.55rem;border-left:5px solid var(--blue);border-radius:0 var(--radius) var(--radius) 0;
+      background:rgba(231,239,248,.78)}
+    .callout h3{margin:0 0 .45rem;color:var(--navy)} .callout p{margin:0}
+    .flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.75rem;margin-top:1.2rem}
+    .flow-step{padding:1rem;border-radius:14px;border:1px solid var(--border);background:#fff;text-align:center;
+      font-weight:800;color:var(--navy)}
+    pre{margin:1rem 0 0;padding:1rem 1.1rem;overflow-x:auto;border-radius:12px;background:#121a26;
+      color:#edf4fb;font-family:Consolas,"Courier New",monospace;font-size:.92rem;line-height:1.55}
+    code{font-family:Consolas,"Courier New",monospace}
+    .table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:#fff}
+    table{width:100%;border-collapse:collapse;min-width:700px}
+    th,td{padding:.9rem 1rem;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+    th{color:var(--navy);background:#edf3f8}
+    .lesson-nav{display:flex;justify-content:space-between;gap:1rem;margin-top:3.5rem;padding-top:1.5rem;
+      border-top:1px solid var(--border)}
+    .lesson-nav a{display:inline-flex;justify-content:center;padding:.72rem 1rem;border-radius:999px;
+      background:var(--navy);color:#fff;text-decoration:none;font-weight:750}
+    footer{padding:1.5rem 1rem 2.5rem;color:var(--muted);text-align:center;font-size:.88rem}
+    @media(max-width:950px){.hero{grid-template-columns:1fr}.grid-4,.grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.flow{grid-template-columns:1fr}}
+    @media(max-width:680px){html{scroll-padding-top:190px}.header-top{align-items:flex-start;flex-direction:column}
+      .index-link{width:100%;justify-content:center}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.lesson-nav{flex-direction:column}}
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-top">
+    <div class="brand"><span class="brand-mark">⌘</span><span>Klin's Learning Library · Git Operations</span></div>
+    <a class="index-link" href="https://sites.google.com/view/klinstech-learning-library/home">← Back to Learning Library</a>
+  </div>
+  <nav class="page-nav">
+    <a href="#overview">Overview</a><a href="#create-repository">Create Repository</a><a href="#model">Git Model</a><a href="#identity">Identity</a>
+    <a href="#status">Status</a><a href="#stage">Stage</a><a href="#commit">Commit</a>
+    <a href="#push-pull">Push & Pull</a><a href="#workflow">Workflow</a>
+    <a href="#recovery">Recovery</a><a href="#reference">Reference</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="overview">
+    <div>
+      <p class="eyebrow">Practical Git Lesson</p>
+      <h1>Git Operations</h1>
+      <p class="hero-copy">Git records changes to a project as a sequence of named checkpoints. GitHub stores a remote copy of that history, but Git itself works locally on your computer.</p>
+    </div>
+    <aside class="hero-card"><strong>The central idea:</strong> editing a file, staging a change, committing a snapshot, and pushing to GitHub are four separate operations.</aside>
+  </section>
+
+
+  <section id="create-repository">
+    <div class="section-heading">
+      <p class="eyebrow">Start Here</p>
+      <h2>Turn an existing folder into a Git repository</h2>
+      <p>Use Git Bash to begin tracking a folder that already contains your project files, then connect it to an empty GitHub repository when you are ready.</p>
+    </div>
+
+    <div class="callout">
+      <h3>Before you begin</h3>
+      <p>Create a new repository on GitHub without adding a README, license, or <code>.gitignore</code>. Keeping the GitHub repository empty prevents an unnecessary first-commit conflict.</p>
+    </div>
+
+    <div class="grid-2" style="margin-top:1.2rem">
+      <article class="card stage-card">
+        <h3>1. Open the folder in Git Bash</h3>
+        <p>In File Explorer, open the project folder, right-click an empty area, and choose <strong>Open Git Bash here</strong>. You can also navigate there manually:</p>
+        <pre><code>cd "/c/path/to/your/project-folder"</code></pre>
+      </article>
+
+      <article class="card status-card">
+        <h3>2. Initialize the local repository</h3>
+        <pre><code>git init
+git status</code></pre>
+        <p style="margin-top:.8rem"><code>git init</code> adds Git's hidden <code>.git</code> directory. Your existing project files remain where they are.</p>
+      </article>
+
+      <article class="card commit-card">
+        <h3>3. Create the first checkpoint</h3>
+        <pre><code>git add -A
+git commit -m "Initial commit"</code></pre>
+        <p style="margin-top:.8rem">This stages the current folder contents and records the first local snapshot.</p>
+      </article>
+
+      <article class="card remote-card">
+        <h3>4. Connect the folder to GitHub</h3>
+        <pre><code>git branch -M main
+git remote add origin https://github.com/USERNAME/REPOSITORY.git
+git push -u origin main</code></pre>
+        <p style="margin-top:.8rem">Replace the example address with the URL of your empty GitHub repository. The <code>-u</code> option remembers the connection, so later you can normally use <code>git push</code>.</p>
+      </article>
+    </div>
+
+    <div class="flow" style="margin-top:1.2rem">
+      <div class="flow-step">Existing Folder</div>
+      <div class="flow-step"><code>git init</code></div>
+      <div class="flow-step">Initial Commit</div>
+      <div class="flow-step">Add Remote</div>
+      <div class="flow-step">Push to GitHub</div>
+    </div>
+
+    <div class="grid-2" style="margin-top:1.2rem">
+      <article class="card">
+        <h3>Verify the connection</h3>
+        <pre><code>git remote -v
+git status</code></pre>
+        <p style="margin-top:.8rem">The first command shows the GitHub address. The second confirms the current branch and whether the working folder is clean.</p>
+      </article>
+
+      <article class="card safety-card">
+        <h3>If Git asks for your identity</h3>
+        <pre><code>git config --global user.name "Your Name"
+git config --global user.email "YOUR_GITHUB_EMAIL"</code></pre>
+        <p style="margin-top:.8rem">Run the commit command again after setting these values.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="model">
+    <div class="section-heading"><h2>1. The Git model</h2><p>Your project moves through a small set of states.</p></div>
+    <div class="flow">
+      <div class="flow-step">Working Folder</div><div class="flow-step">Staging Area</div>
+      <div class="flow-step">Local Commit</div><div class="flow-step">Push</div><div class="flow-step">GitHub</div>
+    </div>
+    <div class="grid-3" style="margin-top:1.2rem">
+      <article class="card"><h3>Working folder</h3><p>The files you see in VS Code. Edits, new files, renames, and deletions begin here.</p></article>
+      <article class="card"><h3>Staging area</h3><p>A preparation zone where you choose which changes belong in the next snapshot.</p></article>
+      <article class="card"><h3>Commit history</h3><p>A chain of permanent local checkpoints with author, time, message, and unique ID.</p></article>
+    </div>
+  </section>
+
+  <div class="callout"><h3>Git and GitHub are not the same thing</h3><p>Git manages project history on your computer. GitHub hosts a remote copy for backup, publishing, sharing, and synchronization.</p></div>
+
+  <section id="identity">
+    <div class="section-heading"><h2>2. Set your Git identity</h2><p>Every commit records who created it.</p></div>
+    <div class="grid-2">
+      <article class="card"><h3>Set your name</h3><pre><code>git config --global user.name "Kevin Linstrum"</code></pre><p style="margin-top:.8rem">This name is written into future commits on this computer.</p></article>
+      <article class="card"><h3>Set your email</h3><pre><code>git config --global user.email "YOUR_GITHUB_EMAIL"</code></pre><p style="margin-top:.8rem">Using the email connected to GitHub helps associate commits with your account.</p></article>
+    </div>
+    <div class="grid-2" style="margin-top:1.2rem">
+      <article class="card"><h3>What <code>--global</code> means</h3><p>The setting applies to all repositories on this computer.</p></article>
+      <article class="card"><h3>Check the values</h3><pre><code>git config --global user.name
+git config --global user.email</code></pre></article>
+    </div>
+  </section>
+
+  <section id="status">
+    <div class="section-heading"><h2>3. Inspect the repository</h2><p>Run this whenever you are unsure what Git sees.</p></div>
+    <article class="card status-card"><h3><code>git status</code></h3><pre><code>git status</code></pre><p style="margin-top:.8rem">It shows the branch, new files, modified files, deleted files, staged changes, unstaged changes, and whether the local branch differs from GitHub.</p></article>
+  </section>
+
+  <section id="stage">
+    <div class="section-heading"><h2>4. Stage changes</h2><p>Staging means selecting changes for the next snapshot.</p></div>
+    <div class="grid-3">
+      <article class="card stage-card"><h3>Stage everything</h3><pre><code>git add -A</code></pre><p style="margin-top:.8rem">Stages new, modified, deleted, and renamed files.</p></article>
+      <article class="card stage-card"><h3>Stage one file</h3><pre><code>git add filename.html</code></pre><p style="margin-top:.8rem">Use this when only one file belongs in the next commit.</p></article>
+      <article class="card stage-card"><h3>Stage one folder</h3><pre><code>git add transistor-history/</code></pre><p style="margin-top:.8rem">Stages all changes inside that folder.</p></article>
+    </div>
+    <div class="callout" style="margin-top:1.2rem"><h3>Why “add” includes deletions</h3><p><code>git add</code> really means “add this change to the next snapshot.” The change itself may be a deletion.</p></div>
+  </section>
+
+  <section id="commit">
+    <div class="section-heading"><h2>5. Create a commit</h2><p>A commit records the staged changes as a named checkpoint.</p></div>
+    <article class="card commit-card"><h3>Commit with a message</h3><pre><code>git commit -m "Remove unused source images"</code></pre><p style="margin-top:.8rem">The <code>-m</code> option supplies the message directly in the terminal.</p></article>
+    <div class="grid-3" style="margin-top:1.2rem">
+      <article class="card"><h3>A commit records</h3><ul><li>The staged changes</li><li>Your identity</li><li>The date and time</li><li>A unique ID</li><li>A link to the previous commit</li></ul></article>
+      <article class="card"><h3>A commit does not</h3><ul><li>Automatically update GitHub</li><li>Include unstaged changes</li><li>Require internet access</li></ul></article>
+      <article class="card"><h3>Good messages</h3><ul><li>Add transistor lesson 12</li><li>Fix lesson navigation links</li><li>Remove unused images</li></ul></article>
+    </div>
+  </section>
+
+  <section id="push-pull">
+    <div class="section-heading"><h2>6. Push and pull</h2><p>These commands synchronize your local repository with GitHub.</p></div>
+    <div class="grid-2">
+      <article class="card remote-card"><h3>Push</h3><pre><code>git push</code></pre><p style="margin-top:.8rem">Sends local commits to GitHub.</p></article>
+      <article class="card remote-card"><h3>Pull</h3><pre><code>git pull</code></pre><p style="margin-top:.8rem">Downloads and integrates newer commits from GitHub.</p></article>
+    </div>
+  </section>
+
+  <section id="workflow">
+    <div class="section-heading"><h2>7. The normal working cycle</h2><p>This is the practical VS Code sequence.</p></div>
+    <article class="card"><pre><code>git pull
+git status
+git add -A
+git status
+git commit -m "Describe the work"
+git push</code></pre></article>
+    <div class="grid-3" style="margin-top:1.2rem">
+      <article class="card"><h3>Before editing</h3><p>Pull so your local copy is current.</p></article>
+      <article class="card"><h3>Before committing</h3><p>Use status to verify exactly what is included.</p></article>
+      <article class="card"><h3>After committing</h3><p>Push so GitHub receives the checkpoint.</p></article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading"><h2>8. Separate unrelated changes</h2><p>You do not have to commit everything at once.</p></div>
+    <div class="grid-2">
+      <article class="card"><h3>Example</h3><pre><code>git add transistor-history/transistor-history-lesson12.html
+git commit -m "Add transistor lesson 12"
+
+git add images/
+git commit -m "Reorganize image assets"</code></pre></article>
+      <article class="card"><h3>Why separate commits help</h3><ul><li>History is easier to understand.</li><li>Problems are easier to isolate.</li><li>One change can be reversed more safely.</li><li>Commit messages stay meaningful.</li></ul></article>
+    </div>
+  </section>
+
+  <section id="recovery">
+    <div class="section-heading"><h2>9. Basic recovery commands</h2><p>Git is useful partly because mistakes can often be reversed.</p></div>
+    <div class="grid-3">
+      <article class="card safety-card"><h3>Discard an unstaged edit</h3><pre><code>git restore filename.html</code></pre><p style="margin-top:.8rem">Restores the last committed version.</p></article>
+      <article class="card safety-card"><h3>Unstage a file</h3><pre><code>git restore --staged filename.html</code></pre><p style="margin-top:.8rem">Keeps the edit but removes it from the next commit.</p></article>
+      <article class="card safety-card"><h3>View recent commits</h3><pre><code>git log --oneline</code></pre><p style="margin-top:.8rem">Shows a compact commit history.</p></article>
+    </div>
+    <div class="callout" style="margin-top:1.2rem"><h3>Safety rule</h3><p>Before using commands containing <code>reset</code>, <code>clean</code>, or <code>--force</code>, verify exactly what they will do.</p></div>
+  </section>
+
+  <section id="reference">
+    <div class="section-heading"><h2>10. Quick reference</h2><p>The core commands and their purposes.</p></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Command</th><th>Purpose</th><th>Changes files?</th><th>Internet?</th></tr></thead>
+        <tbody>
+          <tr><td><code>git status</code></td><td>Shows repository state</td><td>No</td><td>No</td></tr>
+          <tr><td><code>git add -A</code></td><td>Stages all current changes</td><td>No</td><td>No</td></tr>
+          <tr><td><code>git commit -m "..."</code></td><td>Creates a local checkpoint</td><td>No</td><td>No</td></tr>
+          <tr><td><code>git push</code></td><td>Sends commits to GitHub</td><td>Updates GitHub</td><td>Yes</td></tr>
+          <tr><td><code>git pull</code></td><td>Downloads and integrates remote commits</td><td>May update local files</td><td>Yes</td></tr>
+          <tr><td><code>git log --oneline</code></td><td>Shows compact history</td><td>No</td><td>No</td></tr>
+          <tr><td><code>git restore file</code></td><td>Discards unstaged edits</td><td>Yes</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading"><h2>11. The Learning Library workflow</h2><p>This is how Git fits your actual project.</p></div>
+    <div class="grid-4">
+      <article class="card"><h3>1. Create</h3><p>Edit lessons, images, and navigation.</p></article>
+      <article class="card"><h3>2. Preview</h3><p>Open the files locally and verify the result.</p></article>
+      <article class="card"><h3>3. Commit</h3><p>Package one coherent group of changes.</p></article>
+      <article class="card"><h3>4. Push</h3><p>Send the finished checkpoint to GitHub.</p></article>
+    </div>
+  </section>
+
+  <div class="callout"><h3>The deeper lesson</h3><p>Git turns a folder of files into a documented sequence of decisions. The project contains not only its current state, but also a recoverable history of how it became what it is.</p></div>
+
+  <nav class="lesson-nav">
+    <a href="https://sites.google.com/view/klinstech-learning-library/home">← Learning Library</a>
+    <a href="#overview">Back to Top ↑</a>
+  </nav>
+</main>
+
+<footer>Klin's Learning Library · Git Operations</footer>
+</body>
+</html>
