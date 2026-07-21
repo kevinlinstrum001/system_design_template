@@ -1,0 +1,51 @@
+{
+  "project": {
+    "name": "System Design Template",
+    "repository": "https://github.com/kevinlinstrum001/system_design_template",
+    "site": null
+  },
+  "resources": [
+    {
+      "id": "system-events-sheet",
+      "name": "System Events Sheet",
+      "type": "google-sheet",
+      "url": "https://docs.google.com/spreadsheets/d/EXAMPLE",
+      "purpose": "Stores workflow events and completion records",
+      "status": "active",
+      "access": "private",
+      "tags": ["events", "records"],
+      "notes": ""
+    },
+    {
+      "id": "start-test-form",
+      "name": "Start Test Form",
+      "type": "google-form",
+      "url": "https://docs.google.com/forms/d/EXAMPLE",
+      "purpose": "Starts a sandbox workflow test",
+      "status": "active",
+      "access": "restricted",
+      "tags": ["trigger", "sandbox"],
+      "notes": ""
+    },
+    {
+      "id": "system-design-overview",
+      "name": "System Design Overview",
+      "type": "repository-document",
+      "path": "overview.md",
+      "purpose": "Initial vocabulary, goals, and guiding principles",
+      "status": "active",
+      "access": "public",
+      "tags": ["documentation"]
+    },
+    {
+      "id": "manufacturer-sds-example",
+      "name": "Manufacturer SDS",
+      "type": "external-pdf",
+      "url": "https://example.com/document.pdf",
+      "purpose": "Safety reference",
+      "status": "active",
+      "access": "public",
+      "tags": ["sds", "manufacturer"]
+    }
+  ]
+}
